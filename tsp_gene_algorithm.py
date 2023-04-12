@@ -90,53 +90,6 @@ def weighted_sampler(seq, weights):
         totals.append(w + totals[-1] if totals else w)
     return lambda: seq[bisect.bisect(totals, random.uniform(0, totals[-1]))]
 
-"""def fitness(path, map):
-    total_distance = 0
-    check_list = {'a': 0, 'b': 0, 'c': 0, 'd': 0, 'e': 0, 'f': 0, 'g': 0, 'h': 0, 'i': 0, 'j': 0, 'k': 0, 
-                  'l': 0, 'm': 0, 'n': 0, 'o': 0, 'p': 0, 'q': 0, 'r': 0, 's': 0, 't': 0, 'u': 0, 'v': 0, 
-                  'w': 0, 'x': 0, 'y': 0, 'z': 0 } # 0 : 아직 방문하지 않은 도시, 1 : 방문한 도시
-    check_list[path[0]] = 1
-    for i in range(len(path)-1):
-        # 현재 도시 위치에서 다음 도시의 방문 여부를 판단
-        # 만약, 이동할 다음 위치가 0(방문안함)이라면, map의 distance를 가져와서 total_distance에 대입
-        if check_list[path[i+1]] == 0:
-            temp = map.distances.get((path[i], path[i+1]))
-            total_distance += temp
-            check_list[path[i+1]] = 1
-        # 만약, 이동할 다음 위치가 방문한 곳이라면, total_distance에 무한 숫자를 대입
-        else: 
-            total_distance += 100000
-    
-    # 처음 도시로 돌아와야 하므로 마지막 도시에서 처음 도시로의 경로를 더해줌
-    if check_list[path[0]] == 0:
-        total_distance += map.distances.get((path[-1], path[0]))
-    else:
-        total_distance += 100000
-
-    return 1/total_distance """
-
-"""적응도 함수는 최적해와 가까워 질수록 더 높은 값을 return 해야함
-그러므로 각각의 도시들의 거리를 계산한 뒤에 역수 형태를 취해서 더 적을 수록 큰 값이 반환되게 해야함"""
-# def fitness(path, map):
-#     dist = 0
-#     for i in range(len(path) - 1):
-#         """두 도시간의 길이 없거나 같은 도시가 중복될 경우에는 매우 큰 값을 주어서 페널티를 부여함"""
-#         if path.count(path[i]) > 1 :
-#             dist += 1000000
-#         else:
-#             dist += map.distances.get((path[i], path[i + 1]))
-    
-#     """마지막 도시에서 처음 도시로 돌아오는 경로까지 계산해야함"""
-#     if path.count(path[-1]) > 1 :
-#         dist += 1000000
-#     else :
-#         dist += map.distances.get((path[-1], path[0]))
-        
-#     """역수 형태 취하기"""
-#     fitness = 1 / dist
-
-#     return fitness
-
 def fitness(path, map):
     total_distance = 0
     check_list = {'a': 0, 'b': 0, 'c': 0, 'd': 0, 'e': 0, 'f': 0, 'g': 0, 'h': 0, 'i': 0, 'j': 0, 'k': 0, 
@@ -157,6 +110,8 @@ def fitness(path, map):
     
     if map.distances.get((path[-1], path[0])) is not None:
         total_distance += temp
+    else:
+        total_distance += 100000
     ### None이 나오는 이유를 찾아서 이 경우 어떻게 해야할 지 결정해야 할 것 같음 ###
 
     # 처음 도시로 돌아와야 하므로 마지막 도시에서 처음 도시로의 경로를 더해줌
