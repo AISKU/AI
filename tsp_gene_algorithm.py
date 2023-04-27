@@ -172,7 +172,8 @@ city_distance = Map({ ('a', 'z'): 75, ('a', 't'): 118, ('a', 'o'): 121, ('a', 's
                  'l': (0, 0), 'm': (0, 0), 'o': (0, 0), 'p': (0, 0), 'r': (0, 0),
                  's': (0, 0), 't': (0, 0), 'z': (0, 0) })
 
-    
+
+import time
 """초기 개체군 형성
 유전자 pool이나 도시 개수는 map클래스의 인스턴스로 부터 불러오면 된다.
 밑에는 총 개체 100개를 생성한 예시"""
@@ -183,8 +184,10 @@ print(population[:5])
 개체군, 적응도 함수, map인스턴스, 유전자pool를 넣으면 된다.
 f_thres는 해당 값보다 짧은 해가 나왔을 때 탐색을 그만두는 경계값이다.
 다만, 적응도함수는 역수 형태로 값이 나오기 때문에 경계값도 역수 형태로 넣어야 한다."""
+start = time.time()
 solution = genetic_algorithm(population, fitness, city_distance, gene_pool=city_distance.get_gene_pool(), f_thres=(1/1400))
-print(solution, round(1/fitness(solution, city_distance)), sep='\n')
+end = time.time()
+print(solution, round(1/fitness(solution, city_distance)), f"{end-start:.4f} sec", sep='\n')
 
 """입력값에는 여러가지 요소가 있다.
 개체의 개수, 세대의 개수, 돌연변이 확률들을 적절히 조절하여 최적해를 찾을 수 있다.
